@@ -24,6 +24,18 @@ type ToDoServer struct {
 	toDos []*todov1.ToDoItem
 }
 
+func (s *ToDoServer) GetToDos(
+	ctx context.Context,
+	req *connect.Request[todov1.GetToDosRequest],
+) (*connect.Response[todov1.GetToDosResponse], error) {
+	res := connect.NewResponse(&todov1.GetToDosResponse{
+		ToDos: s.toDos,
+	})
+
+	res.Header().Set("ToDo-Version", "v1")
+	return res, nil
+}
+
 func (s *ToDoServer) CreateToDo(
 	ctx context.Context,
 	req *connect.Request[todov1.CreateToDoRequest],
@@ -36,6 +48,25 @@ func (s *ToDoServer) CreateToDo(
 	res := connect.NewResponse(&todov1.CreateToDoResponse{
 		ToDos: s.toDos,
 	})
+	res.Header().Set("ToDo-Version", "v1")
+	return res, nil
+}
+
+func (s *ToDoServer) CompleteToDo(
+	ctx context.Context,
+	req *connect.Request[todov1.CompleteToDoRequest],
+) (*connect.Response[todov1.CompleteToDoResponse], error) {
+
+	for _, toDo := range s.toDos {
+		if toDo.Id == req.Msg.Id {
+			toDo.Complete = true
+		}
+	}
+
+	res := connect.NewResponse(&todov1.CompleteToDoResponse{
+		ToDos: s.toDos,
+	})
+
 	res.Header().Set("ToDo-Version", "v1")
 	return res, nil
 }

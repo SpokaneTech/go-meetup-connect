@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateToDoRequest, CreateToDoResponse } from "./todo_pb.js";
+import { CompleteToDoRequest, CompleteToDoResponse, CreateToDoRequest, CreateToDoResponse, GetToDosRequest, GetToDosResponse } from "./todo_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -19,6 +19,24 @@ export const ToDoService = {
       name: "CreateToDo",
       I: CreateToDoRequest,
       O: CreateToDoResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc todo.v1.ToDoService.GetToDos
+     */
+    getToDos: {
+      name: "GetToDos",
+      I: GetToDosRequest,
+      O: GetToDosResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc todo.v1.ToDoService.CompleteToDo
+     */
+    completeToDo: {
+      name: "CompleteToDo",
+      I: CompleteToDoRequest,
+      O: CompleteToDoResponse,
       kind: MethodKind.Unary,
     },
   }

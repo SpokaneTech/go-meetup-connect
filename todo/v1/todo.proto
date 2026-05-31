@@ -11,12 +11,30 @@ message CreateToDoRequest {
 message ToDoItem {
   string id = 1;
   string toDo = 2;
+  bool complete = 3;
 }
 
 message CreateToDoResponse {
   repeated ToDoItem toDos = 1;
 }
 
+message GetToDosRequest {
+}
+
+message GetToDosResponse {
+  repeated ToDoItem toDos = 1;
+}
+
+message CompleteToDoRequest {
+  string id = 1;
+}
+
+message CompleteToDoResponse {
+  repeated ToDoItem toDos = 1;
+}
+
 service ToDoService {
   rpc CreateToDo(CreateToDoRequest) returns (CreateToDoResponse) {}
+  rpc GetToDos(GetToDosRequest) returns (GetToDosResponse) {}
+  rpc CompleteToDo(CompleteToDoRequest) returns (CompleteToDoResponse) {}
 }

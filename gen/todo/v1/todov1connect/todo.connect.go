@@ -35,11 +35,18 @@ const (
 const (
 	// ToDoServiceCreateToDoProcedure is the fully-qualified name of the ToDoService's CreateToDo RPC.
 	ToDoServiceCreateToDoProcedure = "/todo.v1.ToDoService/CreateToDo"
+	// ToDoServiceGetToDosProcedure is the fully-qualified name of the ToDoService's GetToDos RPC.
+	ToDoServiceGetToDosProcedure = "/todo.v1.ToDoService/GetToDos"
+	// ToDoServiceCompleteToDoProcedure is the fully-qualified name of the ToDoService's CompleteToDo
+	// RPC.
+	ToDoServiceCompleteToDoProcedure = "/todo.v1.ToDoService/CompleteToDo"
 )
 
 // ToDoServiceClient is a client for the todo.v1.ToDoService service.
 type ToDoServiceClient interface {
 	CreateToDo(context.Context, *connect.Request[v1.CreateToDoRequest]) (*connect.Response[v1.CreateToDoResponse], error)
+	GetToDos(context.Context, *connect.Request[v1.GetToDosRequest]) (*connect.Response[v1.GetToDosResponse], error)
+	CompleteToDo(context.Context, *connect.Request[v1.CompleteToDoRequest]) (*connect.Response[v1.CompleteToDoResponse], error)
 }
 
 // NewToDoServiceClient constructs a client for the todo.v1.ToDoService service. By default, it uses
@@ -57,12 +64,24 @@ func NewToDoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			baseURL+ToDoServiceCreateToDoProcedure,
 			opts...,
 		),
+		getToDos: connect.NewClient[v1.GetToDosRequest, v1.GetToDosResponse](
+			httpClient,
+			baseURL+ToDoServiceGetToDosProcedure,
+			opts...,
+		),
+		completeToDo: connect.NewClient[v1.CompleteToDoRequest, v1.CompleteToDoResponse](
+			httpClient,
+			baseURL+ToDoServiceCompleteToDoProcedure,
+			opts...,
+		),
 	}
 }
 
 // toDoServiceClient implements ToDoServiceClient.
 type toDoServiceClient struct {
-	createToDo *connect.Client[v1.CreateToDoRequest, v1.CreateToDoResponse]
+	createToDo   *connect.Client[v1.CreateToDoRequest, v1.CreateToDoResponse]
+	getToDos     *connect.Client[v1.GetToDosRequest, v1.GetToDosResponse]
+	completeToDo *connect.Client[v1.CompleteToDoRequest, v1.CompleteToDoResponse]
 }
 
 // CreateToDo calls todo.v1.ToDoService.CreateToDo.
@@ -70,9 +89,21 @@ func (c *toDoServiceClient) CreateToDo(ctx context.Context, req *connect.Request
 	return c.createToDo.CallUnary(ctx, req)
 }
 
+// GetToDos calls todo.v1.ToDoService.GetToDos.
+func (c *toDoServiceClient) GetToDos(ctx context.Context, req *connect.Request[v1.GetToDosRequest]) (*connect.Response[v1.GetToDosResponse], error) {
+	return c.getToDos.CallUnary(ctx, req)
+}
+
+// CompleteToDo calls todo.v1.ToDoService.CompleteToDo.
+func (c *toDoServiceClient) CompleteToDo(ctx context.Context, req *connect.Request[v1.CompleteToDoRequest]) (*connect.Response[v1.CompleteToDoResponse], error) {
+	return c.completeToDo.CallUnary(ctx, req)
+}
+
 // ToDoServiceHandler is an implementation of the todo.v1.ToDoService service.
 type ToDoServiceHandler interface {
 	CreateToDo(context.Context, *connect.Request[v1.CreateToDoRequest]) (*connect.Response[v1.CreateToDoResponse], error)
+	GetToDos(context.Context, *connect.Request[v1.GetToDosRequest]) (*connect.Response[v1.GetToDosResponse], error)
+	CompleteToDo(context.Context, *connect.Request[v1.CompleteToDoRequest]) (*connect.Response[v1.CompleteToDoResponse], error)
 }
 
 // NewToDoServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -86,10 +117,24 @@ func NewToDoServiceHandler(svc ToDoServiceHandler, opts ...connect.HandlerOption
 		svc.CreateToDo,
 		opts...,
 	)
+	toDoServiceGetToDosHandler := connect.NewUnaryHandler(
+		ToDoServiceGetToDosProcedure,
+		svc.GetToDos,
+		opts...,
+	)
+	toDoServiceCompleteToDoHandler := connect.NewUnaryHandler(
+		ToDoServiceCompleteToDoProcedure,
+		svc.CompleteToDo,
+		opts...,
+	)
 	return "/todo.v1.ToDoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ToDoServiceCreateToDoProcedure:
 			toDoServiceCreateToDoHandler.ServeHTTP(w, r)
+		case ToDoServiceGetToDosProcedure:
+			toDoServiceGetToDosHandler.ServeHTTP(w, r)
+		case ToDoServiceCompleteToDoProcedure:
+			toDoServiceCompleteToDoHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -101,4 +146,12 @@ type UnimplementedToDoServiceHandler struct{}
 
 func (UnimplementedToDoServiceHandler) CreateToDo(context.Context, *connect.Request[v1.CreateToDoRequest]) (*connect.Response[v1.CreateToDoResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("todo.v1.ToDoService.CreateToDo is not implemented"))
+}
+
+func (UnimplementedToDoServiceHandler) GetToDos(context.Context, *connect.Request[v1.GetToDosRequest]) (*connect.Response[v1.GetToDosResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("todo.v1.ToDoService.GetToDos is not implemented"))
+}
+
+func (UnimplementedToDoServiceHandler) CompleteToDo(context.Context, *connect.Request[v1.CompleteToDoRequest]) (*connect.Response[v1.CompleteToDoResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("todo.v1.ToDoService.CompleteToDo is not implemented"))
 }

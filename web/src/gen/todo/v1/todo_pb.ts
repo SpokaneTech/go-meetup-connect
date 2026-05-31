@@ -57,6 +57,11 @@ export class ToDoItem extends Message<ToDoItem> {
    */
   toDo = "";
 
+  /**
+   * @generated from field: bool complete = 3;
+   */
+  complete = false;
+
   constructor(data?: PartialMessage<ToDoItem>) {
     super();
     proto3.util.initPartial(data, this);
@@ -67,6 +72,7 @@ export class ToDoItem extends Message<ToDoItem> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "toDo", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "complete", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ToDoItem {
@@ -120,6 +126,148 @@ export class CreateToDoResponse extends Message<CreateToDoResponse> {
 
   static equals(a: CreateToDoResponse | PlainMessage<CreateToDoResponse> | undefined, b: CreateToDoResponse | PlainMessage<CreateToDoResponse> | undefined): boolean {
     return proto3.util.equals(CreateToDoResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message todo.v1.GetToDosRequest
+ */
+export class GetToDosRequest extends Message<GetToDosRequest> {
+  constructor(data?: PartialMessage<GetToDosRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "todo.v1.GetToDosRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetToDosRequest {
+    return new GetToDosRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetToDosRequest {
+    return new GetToDosRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetToDosRequest {
+    return new GetToDosRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetToDosRequest | PlainMessage<GetToDosRequest> | undefined, b: GetToDosRequest | PlainMessage<GetToDosRequest> | undefined): boolean {
+    return proto3.util.equals(GetToDosRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message todo.v1.GetToDosResponse
+ */
+export class GetToDosResponse extends Message<GetToDosResponse> {
+  /**
+   * @generated from field: repeated todo.v1.ToDoItem toDos = 1;
+   */
+  toDos: ToDoItem[] = [];
+
+  constructor(data?: PartialMessage<GetToDosResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "todo.v1.GetToDosResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "toDos", kind: "message", T: ToDoItem, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetToDosResponse {
+    return new GetToDosResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetToDosResponse {
+    return new GetToDosResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetToDosResponse {
+    return new GetToDosResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetToDosResponse | PlainMessage<GetToDosResponse> | undefined, b: GetToDosResponse | PlainMessage<GetToDosResponse> | undefined): boolean {
+    return proto3.util.equals(GetToDosResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message todo.v1.CompleteToDoRequest
+ */
+export class CompleteToDoRequest extends Message<CompleteToDoRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
+  constructor(data?: PartialMessage<CompleteToDoRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "todo.v1.CompleteToDoRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CompleteToDoRequest {
+    return new CompleteToDoRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CompleteToDoRequest {
+    return new CompleteToDoRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CompleteToDoRequest {
+    return new CompleteToDoRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CompleteToDoRequest | PlainMessage<CompleteToDoRequest> | undefined, b: CompleteToDoRequest | PlainMessage<CompleteToDoRequest> | undefined): boolean {
+    return proto3.util.equals(CompleteToDoRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message todo.v1.CompleteToDoResponse
+ */
+export class CompleteToDoResponse extends Message<CompleteToDoResponse> {
+  /**
+   * @generated from field: repeated todo.v1.ToDoItem toDos = 1;
+   */
+  toDos: ToDoItem[] = [];
+
+  constructor(data?: PartialMessage<CompleteToDoResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "todo.v1.CompleteToDoResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "toDos", kind: "message", T: ToDoItem, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CompleteToDoResponse {
+    return new CompleteToDoResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CompleteToDoResponse {
+    return new CompleteToDoResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CompleteToDoResponse {
+    return new CompleteToDoResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CompleteToDoResponse | PlainMessage<CompleteToDoResponse> | undefined, b: CompleteToDoResponse | PlainMessage<CompleteToDoResponse> | undefined): boolean {
+    return proto3.util.equals(CompleteToDoResponse, a, b);
   }
 }
 
